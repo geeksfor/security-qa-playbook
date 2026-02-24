@@ -1,66 +1,118 @@
-## Foundry
+# security-qa-playbook
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A Foundry-based **security QA playbook** repo: layered tests + reusable testkit + debugging guidance.
+Goal: make smart-contract security testing **team-maintainable** and **easy to debug**.
 
-Foundry consists of:
+> Focus: unit / integration / fork / invariant / differential testing patterns, plus common mocks + helpers.
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+---
 
-## Documentation
+## Quick Start
 
-https://book.getfoundry.sh/
+### Prerequisites
+- Foundry installed: `forge`, `cast`, `anvil`
+- (Optional) `bash` for scripts
 
-## Usage
+### Install deps
+This repo recommends **not committing `lib/`**. Install dependencies locally:
 
-### Build
+```bash
+forge install foundry-rs/forge-std --no-commit
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
 
-```shell
-$ forge build
+# Generate remappings
+forge remappings > remappings.txt
 ```
 
-### Test
-
-```shell
-$ forge test
+### Run tests
+```bash
+forge test -vvv
 ```
 
-### Format
-
-```shell
-$ forge fmt
+### Run one-click CI script (local)
+```bash
+chmod +x scripts/ci.sh
+./scripts/ci.sh
 ```
 
-### Gas Snapshots
+---
 
-```shell
-$ forge snapshot
+## Repo Layout
+
+```text
+security-qa-playbook/
+├── src/
+│   ├── mocks/             # controllable mocks for security testing
+│   ├── testkit/           # reusable infra (accounts/units/asserts/fixtures/fork/trace)
+│   ├── examples/          # minimal runnable business examples
+│   └── interfaces/        # minimal interfaces (optional)
+├── test/
+│   ├── helpers/           # BaseTest / Asserts / Fixtures ...
+│   ├── templates/         # copy-paste specs (training deliverables)
+│   ├── unit/              # single-contract behavior
+│   ├── integration/       # multi-contract compositions (mock + example)
+│   ├── invariant/         # invariants & handler-based fuzzing
+│   ├── differential/      # vuln vs fixed / before vs after diff tests
+│   └── fork/              # mainnet fork regression (readonly first)
+├── docs/
+│   ├── playbook/          # methodology, debugging, PR bar
+│   └── checklists/        # risk-driven test checklists
+└── scripts/               # fmt/test/coverage automation
 ```
 
-### Anvil
+---
 
-```shell
-$ anvil
+## Week 1 Deliverables (Engineering the Testing System)
+
+- D1: test layering directories (`unit/integration/fork/invariant`)
+- D2: unified `BaseTest` + role accounts (alice/bob/attacker/admin)
+- D3: assert helpers (abs/rel/range)
+- D4: unified fixtures (deploy & initialize)
+- D5: debugging playbook: `docs/playbook/debugging-trace.md`
+- D6: one-click script: `scripts/ci.sh`
+
+See: `docs/playbook/debugging-trace.md` for tracing/logging/min-repro workflow.
+
+---
+
+## Fork Testing (Optional)
+
+To run fork tests, set RPC endpoint:
+
+```bash
+export ETH_RPC_URL="https://..."
 ```
 
-### Deploy
+Then run fork suite (example):
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
+forge test --match-path test/fork/*.t.sol -vvv
 ```
 
-### Cast
+---
 
-```shell
-$ cast <subcommand>
-```
+## Conventions
 
-### Help
+### Naming
+- Tests: `test_<behavior>_<expected>()`
+- Templates/spec: `*.spec.t.sol`
+- Invariants: `*.invariant.t.sol`
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+### PR Quality Bar (suggested)
+- `forge fmt --check`
+- `forge test -vvv`
+- `forge coverage` (optional gate)
+- Add regression test for any bug fix
+
+---
+
+## FAQ
+
+### Should we commit `lib/`?
+Recommendation: **No**. Keep repo clean and reproducible by running `forge install`.
+If your environment is air-gapped, consider committing `lib/` or pinning deps via internal mirrors.
+
+---
+
+## License
+MIT (or choose your preferred license).
