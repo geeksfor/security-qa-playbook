@@ -1,0 +1,66 @@
+{
+  // ---------- Editor basics ----------
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n",
+  // ---------- Search / exclude ----------
+  "search.exclude": {
+    "**/lib/**": true,
+    "**/out/**": true,
+    "**/cache/**": true,
+    "**/.git/**": true
+  },
+  "files.watcherExclude": {
+    "**/lib/**": true,
+    "**/out/**": true,
+    "**/cache/**": true
+  },
+  // ---------- Solidity (Juan Blanco) ----------
+  // 需要安装扩展："solidity" (JuanBlanco.solidity)
+  // 用本地 solc（如果你用 foundry 自带版本管理，可保持默认；否则填你机器上的 solc 路径）
+  "solidity.compileUsingRemoteVersion": "",
+  "solidity.defaultCompiler": "localNodeModule",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.enabledAsYouTypeCompilationErrorCheck": false,
+  "solidity.compileOnSave": false,
+  "solidity.remappings": [
+    "forge-std/=lib/forge-std/src/",
+    "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+  ],
+  // ---------- Foundry ----------
+  // 需要安装扩展："Foundry" (tintinweb.vscode-foundry 或其他 foundry 扩展均可)
+  // 让 VS Code 不把 out/cache/lib 当成 workspace 文件处理
+  "foundry.anvil.enable": true,
+  // ---------- Formatting: keep Forge fmt as source of truth ----------
+  // 建议安装扩展："Forge Formatter"（如果你有），否则保留默认也行
+  // 关键是：Solidity 保存时不要被其他 formatter 抢走
+  "[solidity]": {
+    "editor.defaultFormatter": "JuanBlanco.solidity",
+    "editor.formatOnSave": true
+  },
+  // ---------- Markdown ----------
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // ---------- Shell script ----------
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  // ---------- Terminal ----------
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.scrollback": 10000,
+  // ---------- Git ----------
+  "git.autofetch": true,
+  // ---------- Quality of life ----------
+  "explorer.compactFolders": false,
+  "editor.rulers": [
+    100
+  ],
+  "editor.minimap.enabled": false
+}

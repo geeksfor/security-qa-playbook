@@ -1,0 +1,40 @@
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+cache_path = "cache"
+evm_version = "cancun"
+solc = "0.8.24"
+
+# 让回溯/定位更友好
+verbosity = 3
+ffi = false
+
+# 便于测试里用 env（fork RPC 等）
+fs_permissions = [{ access = "read", path = "./" }]
+
+# fuzz / invariant（训练营后期会用到）
+[fuzz]
+runs = 512
+max_test_rejects = 65536
+
+[invariant]
+runs = 128
+depth = 64
+fail_on_revert = true
+
+# gas report（可选：想看 gas 报告可以开）
+gas_reports = ["*"]
+
+# fmt（Foundry 新版默认即可，这里显式写便于团队一致）
+[fmt]
+line_length = 100
+tab_width = 4
+bracket_spacing = true
+int_types = "long"
+multiline_func_header = "attributes_first"
+quote_style = "double"
+
+# 如果你打算写 fork 测试：用环境变量读取 RPC
+# 运行示例：ETH_RPC_URL=... forge test --match-path test/fork/*.t.sol -vvv

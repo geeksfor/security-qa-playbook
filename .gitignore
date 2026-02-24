@@ -1,0 +1,21 @@
+# Foundry
+out/
+cache/
+broadcast/
+snapshots/
+coverage/
+coverage.json
+gas-snapshots/
+
+# Dependencies (choose one strategy)
+lib/
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Env secrets
+.env
